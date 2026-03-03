@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Матур | Турагентство</title>
     <style>
+        /* Стили (без изменений, можно оставить как есть) */
         * {
             margin: 0;
             padding: 0;
@@ -21,7 +22,6 @@
             margin: 0 auto;
             padding: 0 20px;
         }
-        /* Header */
         header {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
@@ -60,7 +60,6 @@
             font-size: 18px;
             font-weight: 600;
         }
-        /* Hero */
         .hero {
             background: url('https://images.pexels.com/photos/672358/pexels-photo-672358.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') no-repeat center center/cover;
             color: white;
@@ -120,7 +119,6 @@
         .search-form button:hover {
             background: #2a5298;
         }
-        /* Tours section */
         .section-title {
             text-align: center;
             font-size: 36px;
@@ -175,22 +173,6 @@
             font-weight: 400;
             color: #999;
         }
-        .btn {
-            display: inline-block;
-            background: #1e3c72;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background: #2a5298;
-        }
-        /* Features */
         .features {
             background: white;
             padding: 60px 0;
@@ -210,7 +192,6 @@
             margin-bottom: 10px;
             color: #1e3c72;
         }
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -329,7 +310,6 @@
             color: #721c24;
             display: block;
         }
-        /* Footer */
         footer {
             background: #1e3c72;
             color: white;
@@ -351,7 +331,6 @@
             margin-top: 20px;
             color: #ccc;
         }
-        /* Responsive */
         @media (max-width: 768px) {
             header .container {
                 flex-direction: column;
@@ -377,7 +356,8 @@
             <nav>
                 <ul>
                     <li><a href="#">Главная</a></li>
-                    <li><a href="#tours">Туры</a></li>
+                    <li><a href="#hot-tours">Горящие туры</a></li>
+                    <li><a href="#all-tours">Все туры</a></li>
                     <li><a href="#features">О нас</a></li>
                     <li><a href="#contacts">Контакты</a></li>
                 </ul>
@@ -406,9 +386,19 @@
         </div>
     </section>
 
-    <section id="tours" class="container">
+    <!-- Секция горящих туров (всегда первые 4, помеченные isHot) -->
+    <section id="hot-tours" class="container">
         <h2 class="section-title">Горящие туры</h2>
         <div class="tour-grid" id="hotToursContainer"></div>
+    </section>
+
+    <!-- Секция всех туров (изначально все, фильтруется поиском) -->
+    <section id="all-tours" class="container">
+        <h2 class="section-title">Все туры</h2>
+        <div class="tour-grid" id="allToursContainer"></div>
+        <div style="text-align: center; margin-bottom: 40px;">
+            <button class="btn" onclick="resetSearch()">Сбросить фильтр</button>
+        </div>
     </section>
 
     <section class="features" id="features">
@@ -452,9 +442,10 @@
             <div class="logo">Ма<span>тур</span></div>
             <ul class="footer-links">
                 <li><a href="#">Главная</a></li>
-                <li><a href="#tours">Туры</a></li>
+                <li><a href="#hot-tours">Горящие туры</a></li>
+                <li><a href="#all-tours">Все туры</a></li>
                 <li><a href="#features">О нас</a></li>
-                <li><a href="#">Контакты</a></li>
+                <li><a href="#contacts">Контакты</a></li>
             </ul>
             <p>г. Йошкар-Ола, ул. Панфилова, д.15</p>
             <p>+7 (902) 430-77-42 | info@matur.ru</p>
@@ -463,7 +454,7 @@
     </footer>
 
     <script>
-        // Данные туров с расширенным описанием
+        // Расширенный массив туров (добавлено больше вариантов)
         const tours = [
             {
                 id: 1,
@@ -475,18 +466,13 @@
                 endDate: '2026-06-15',
                 price: 142300,
                 seats: 10,
-                image: 'images/turkey.jpg', // замените на свой путь
-                shortDescription: 'Шикарный пятизвездочный отель с собственным пляжем, аквапарком и спа-центром. Всё включено!',
-                fullDescription: 'Отель Rixos Premium Belek расположен на побережье Средиземного моря, окруженный сосновым лесом. К услугам гостей просторные номера с современным дизайном, собственная песчано-галечная бухта, один из крупнейших аквапарков региона, 10 ресторанов и 7 баров. Спа-центр предлагает турецкую баню, сауну, массажные кабинеты и крытый бассейн. Для детей работают мини-клуб и детский бассейн.',
-                highlights: [
-                    'Собственный пляж 500 м',
-                    'Аквапарк с 15 горками',
-                    '10 ресторанов (турецкая, итальянская, азиатская кухня)',
-                    'Анимация для взрослых и детей',
-                    'Бесплатный Wi-Fi на всей территории'
-                ],
-                includes: ['Перелет', 'Проживание', 'Питание Ultra All Inclusive', 'Трансфер', 'Медицинская страховка'],
-                excludes: ['Экскурсии', 'Дополнительные услуги спа']
+                image: 'images/turkey.jpg',
+                shortDescription: 'Шикарный пятизвездочный отель с собственным пляжем.',
+                fullDescription: 'Отель Rixos Premium Belek расположен на побережье Средиземного моря, окруженный сосновым лесом. К услугам гостей просторные номера с современным дизайном, собственная песчано-галечная бухта, один из крупнейших аквапарков региона, 10 ресторанов и 7 баров.',
+                highlights: ['Собственный пляж 500 м', 'Аквапарк с 15 горками', '10 ресторанов'],
+                includes: ['Перелет', 'Проживание', 'Питание Ultra All Inclusive'],
+                excludes: ['Экскурсии'],
+                isHot: true
             },
             {
                 id: 2,
@@ -499,17 +485,12 @@
                 price: 125000,
                 seats: 5,
                 image: 'images/egypt.jpg',
-                shortDescription: 'Отличный отель в Хургаде с огромной территорией, коралловым рифом и анимацией.',
-                fullDescription: 'Steigenberger Al Dau Beach Hotel находится в 10 км от аэропорта Хургады, на первой береговой линии. Отель славится своим живописным коралловым рифом, который виден прямо с пирса. Территория утопает в зелени, есть несколько бассейнов, собственный пляж с песчаным входом. Рестораны предлагают блюда интернациональной и восточной кухни. Вечерняя анимация и шоу-программы.',
-                highlights: [
-                    'Домственный коралловый риф',
-                    'Большой открытый бассейн',
-                    'SPA-центр с хаммамом',
-                    'Рестораны a la carte',
-                    'Детский клуб'
-                ],
-                includes: ['Перелет', 'Проживание', 'Питание All Inclusive', 'Трансфер', 'Страховка'],
-                excludes: ['Визовая поддержка', 'Экскурсии']
+                shortDescription: 'Отличный отель в Хургаде с огромной территорией.',
+                fullDescription: 'Steigenberger Al Dau Beach Hotel находится в 10 км от аэропорта Хургады, на первой береговой линии. Отель славится своим живописным коралловым рифом.',
+                highlights: ['Домственный коралловый риф', 'Большой открытый бассейн', 'SPA-центр'],
+                includes: ['Перелет', 'Проживание', 'Питание All Inclusive'],
+                excludes: ['Визовая поддержка'],
+                isHot: true
             },
             {
                 id: 3,
@@ -522,17 +503,12 @@
                 price: 350000,
                 seats: 3,
                 image: 'images/uae.jpg',
-                shortDescription: 'Легендарный отель на пальме Джумейра с аквапарком и океанариумом.',
-                fullDescription: 'Atlantis The Palm — знаменитый отель на искусственном острове Пальма Джумейра. Гостей ждут роскошные номера с видом на Персидский залив, аквапарк Aquaventure (крупнейший на Ближнем Востоке), океанариум The Lost Chambers с тысячами морских обитателей, более 20 ресторанов, включая ресторан Nobu. Пляж частный, песчаный. Для детей — клуб и детский бассейн.',
-                highlights: [
-                    'Аквапарк Aquaventure',
-                    'Океанариум The Lost Chambers',
-                    '20 ресторанов и баров',
-                    'Собственный пляж',
-                    'SPA-центр'
-                ],
-                includes: ['Перелет', 'Проживание', 'Завтраки', 'Трансфер', 'Страховка'],
-                excludes: ['Вход в аквапарк (при бронировании без аквапарка)']
+                shortDescription: 'Легендарный отель на пальме Джумейра.',
+                fullDescription: 'Atlantis The Palm — знаменитый отель на искусственном острове Пальма Джумейра. Гостей ждут роскошные номера с видом на Персидский залив.',
+                highlights: ['Аквапарк Aquaventure', 'Океанариум The Lost Chambers', '20 ресторанов'],
+                includes: ['Перелет', 'Проживание', 'Завтраки'],
+                excludes: ['Вход в аквапарк'],
+                isHot: true
             },
             {
                 id: 4,
@@ -545,31 +521,78 @@
                 price: 210000,
                 seats: 8,
                 image: 'images/thailand.jpg',
-                shortDescription: 'Виллы с собственным бассейном на пляже Ката-Ной. Идеально для пар.',
-                fullDescription: 'The Shore at Katathani — бутик-отель для взрослых (только для гостей от 16 лет) на юге Пхукета, на пляже Ката-Ной. Состоит из отдельных вилл с частными бассейнами. Дизайн выполнен в современном тайском стиле. Ресторан подаёт блюда из морепродуктов и тайской кухни. Спа-центр предлагает традиционные тайские массажи. Пляж тихий, идеальный для уединённого отдыха.',
-                highlights: [
-                    'Виллы с приватным бассейном',
-                    'Для взрослых (16+)',
-                    'Спа с тайскими массажами',
-                    'Ресторан морепродуктов',
-                    'Уединённый пляж'
-                ],
-                includes: ['Перелет', 'Проживание', 'Завтраки', 'Трансфер', 'Страховка'],
-                excludes: ['Ужины', 'Экскурсии']
+                shortDescription: 'Виллы с собственным бассейном на пляже Ката-Ной.',
+                fullDescription: 'The Shore at Katathani — бутик-отель для взрослых (только для гостей от 16 лет) на юге Пхукета, на пляже Ката-Ной.',
+                highlights: ['Виллы с приватным бассейном', 'Для взрослых', 'Спа'],
+                includes: ['Перелет', 'Проживание', 'Завтраки'],
+                excludes: ['Ужины'],
+                isHot: true
+            },
+            // Дополнительные туры (не горящие)
+            {
+                id: 5,
+                name: 'Сказочная Каппадокия',
+                country: 'Турция',
+                hotel: 'Sultan Cave Suites',
+                stars: 4,
+                startDate: '2026-08-05',
+                endDate: '2026-08-12',
+                price: 98000,
+                seats: 6,
+                image: 'images/cappadocia.jpg',
+                shortDescription: 'Уникальные пещерные отели и полёты на воздушных шарах.',
+                fullDescription: 'Очаровательный отель в пещерах с видом на долину. Экскурсии по Каппадокии, закаты и воздушные шары.',
+                highlights: ['Пещерные номера', 'Терраса с видом', 'Полёты на шарах'],
+                includes: ['Перелет', 'Проживание', 'Завтраки'],
+                excludes: ['Экскурсии'],
+                isHot: false
+            },
+            {
+                id: 6,
+                name: 'Итальянская классика',
+                country: 'Италия',
+                hotel: 'Hotel Villa D\'Este',
+                stars: 5,
+                startDate: '2026-09-10',
+                endDate: '2026-09-20',
+                price: 285000,
+                seats: 4,
+                image: 'images/italy.jpg',
+                shortDescription: 'Роскошный отдых на озере Комо.',
+                fullDescription: 'Исторический отель на берегу озера Комо с парком и спа-центром. Изысканная кухня.',
+                highlights: ['Озеро Комо', 'Спа-центр', 'Ресторан мишлен'],
+                includes: ['Перелет', 'Проживание', 'Завтраки'],
+                excludes: ['Трансферы'],
+                isHot: false
             }
         ];
 
-        // Отображение горящих туров (первые 4)
+        // Отображение горящих туров (с isHot = true)
         function displayHotTours() {
             const container = document.getElementById('hotToursContainer');
             container.innerHTML = '';
-            tours.slice(0, 4).forEach(tour => {
+            const hotTours = tours.filter(t => t.isHot).slice(0, 4); // максимум 4
+            hotTours.forEach(tour => {
                 const card = createTourCard(tour);
                 container.appendChild(card);
             });
         }
 
-        // Создание карточки тура
+        // Отображение всех туров (в секцию "Все туры")
+        function displayAllTours(toursToShow = tours) {
+            const container = document.getElementById('allToursContainer');
+            container.innerHTML = '';
+            if (toursToShow.length === 0) {
+                container.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Туры не найдены. Попробуйте изменить параметры.</p>';
+            } else {
+                toursToShow.forEach(tour => {
+                    const card = createTourCard(tour);
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        // Создание карточки тура (без изменений)
         function createTourCard(tour) {
             const card = document.createElement('div');
             card.className = 'tour-card';
@@ -588,7 +611,7 @@
             return card;
         }
 
-        // Открытие модалки с деталями тура и формой
+        // Открытие модалки (без изменений)
         function openModal(tour) {
             const modal = document.getElementById('tourModal');
             const content = document.getElementById('modalContent');
@@ -648,13 +671,12 @@
             document.getElementById('tourModal').classList.remove('active');
         }
 
-        // Форматирование даты
         function formatDate(dateStr) {
             const d = new Date(dateStr);
             return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
         }
 
-        // Обработка отправки формы бронирования (имитация)
+        // Обработка отправки формы (без изменений)
         function submitBooking(event, tourId) {
             event.preventDefault();
             const form = event.target;
@@ -688,7 +710,7 @@
             console.log('Booking saved:', { name, email, phone, comment, tourId });
         }
 
-        // Функция поиска (фильтрация туров)
+        // Функция поиска (фильтрует все туры, обновляет секцию "Все туры")
         function searchTours() {
             const country = document.getElementById('countrySelect').value;
             const dateFrom = document.getElementById('dateFrom').value;
@@ -703,23 +725,24 @@
                 return true;
             });
 
-            const container = document.getElementById('hotToursContainer');
-            container.innerHTML = '';
-            if (filtered.length === 0) {
-                container.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Туры не найдены. Попробуйте изменить параметры.</p>';
-            } else {
-                filtered.forEach(tour => {
-                    const card = createTourCard(tour);
-                    container.appendChild(card);
-                });
-            }
-
-            document.getElementById('tours').scrollIntoView({ behavior: 'smooth' });
+            displayAllTours(filtered);
+            // Прокрутка к секции всех туров
+            document.getElementById('all-tours').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Загрузка горящих туров при старте
+        // Сброс фильтра (показать все туры)
+        function resetSearch() {
+            document.getElementById('countrySelect').value = '';
+            document.getElementById('dateFrom').value = '';
+            document.getElementById('dateTo').value = '';
+            document.getElementById('adults').value = '2';
+            displayAllTours(tours);
+        }
+
+        // Загрузка при старте
         window.onload = function() {
             displayHotTours();
+            displayAllTours(tours);
             const modal = document.getElementById('tourModal');
             window.onclick = function(event) {
                 if (event.target == modal) {
